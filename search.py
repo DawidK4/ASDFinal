@@ -46,3 +46,35 @@ def linear_search(arr, key):
         if arr[i] == key:
             return i
     return -1
+
+def tournament_min_and_second_min(arr):
+    """
+    Finds the minimum and second minimum element using the tournament method.
+    Returns a tuple: (min_value, second_min_value)
+    """
+    if len(arr) < 2:
+        raise ValueError("Array must contain at least two elements.")
+
+    # Each element is a tuple: (value, [elements it defeated])
+    nodes = [(x, []) for x in arr]
+
+    # Tournament phase: build the tree
+    while len(nodes) > 1:
+        next_round = []
+        for i in range(0, len(nodes), 2):
+            if i + 1 < len(nodes):
+                # Compare two elements
+                if nodes[i][0] < nodes[i+1][0]:
+                    winner = (nodes[i][0], nodes[i][1] + [nodes[i+1][0]])
+                else:
+                    winner = (nodes[i+1][0], nodes[i+1][1] + [nodes[i][0]])
+                next_round.append(winner)
+            else:
+                # Odd element advances automatically
+                next_round.append(nodes[i])
+        nodes = next_round
+
+    min_value, defeated = nodes[0]
+    # Second minimum is the smallest among those defeated by the winner
+    second_min_value = min(defeated)
+    return min_value, second_min_value
