@@ -24,3 +24,16 @@ def selection_sort(S):
         mini = index_of_min(S, i, n)
         swap(S, i, mini)
         i += 1
+
+def insertion_sort(arr):
+    """
+    Sorts the list arr in place using insertion sort.
+    """
+    n = len(arr)
+    for next in range(1, n):
+        curr = next
+        temp = arr[next]
+        while curr > 0 and temp < arr[curr - 1]:
+            arr[curr] = arr[curr - 1]
+            curr -= 1
+        arr[curr] = temp
