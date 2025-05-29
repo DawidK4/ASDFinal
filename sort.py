@@ -72,3 +72,34 @@ def merge_sort(S, length=None):
     left = merge_sort(S[:m], m)
     right = merge_sort(S[m:length], length - m)
     return merge(left, len(left), right, len(right))
+
+def partition(a, l, r):
+    """
+    Reorganizes the subarray a[l:r+1] so that the pivot (a[l]) is placed in its correct position.
+    All elements to the left are <= pivot, all to the right are >= pivot.
+    Returns the final index of the pivot.
+    """
+    i = l + 1
+    j = r
+    p = a[l]  # pivot
+    while True:
+        while i <= r and a[i] <= p:
+            i += 1
+        while j > l and a[j] >= p:
+            j -= 1
+        if i < j:
+            a[i], a[j] = a[j], a[i]
+        else:
+            break
+    a[l], a[j] = a[j], a[l]
+    return j
+
+def quicksort(a, l, r):
+    """
+    Sorts the subarray a[l:r+1] in place using the QuickSort algorithm.
+    """
+    if l >= r:
+        return
+    k = partition(a, l, r)
+    quicksort(a, l, k - 1)
+    quicksort(a, k + 1, r)
