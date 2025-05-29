@@ -103,3 +103,31 @@ def quicksort(a, l, r):
     k = partition(a, l, r)
     quicksort(a, l, k - 1)
     quicksort(a, k + 1, r)
+
+def count_sort(a):
+    """
+    Sorts the list 'a' of non-negative integers using the CountSort algorithm.
+    Returns a new sorted list.
+    """
+    if not a:
+        return []
+
+    max_val = max(a)
+    l1 = max_val + 1
+    counts = [0] * l1
+    result = [0] * len(a)
+
+    # 1. Count occurrences
+    for num in a:
+        counts[num] += 1
+
+    # 2. Prefix sums
+    for i in range(1, l1):
+        counts[i] += counts[i - 1]
+
+    # 3. Place elements in result (iterate from end for stability)
+    for i in range(len(a) - 1, -1, -1):
+        counts[a[i]] -= 1
+        result[counts[a[i]]] = a[i]
+
+    return result
