@@ -131,3 +131,44 @@ def count_sort(a):
         result[counts[a[i]]] = a[i]
 
     return result
+
+def radix_sort(arr):
+    """
+    Sorts a list of non-negative integers using the RadixSort algorithm (LSD).
+    Uses stable CountSort as the subroutine for each digit position.
+    Returns a new sorted list.
+    """
+    if not arr:
+        return []
+
+    max_val = max(arr)
+    exp = 1  # Start with the least significant digit
+
+    def count_sort_digit(a, exp):
+        n = len(a)
+        output = [0] * n
+        count = [0] * 10  # For digits 0-9
+
+        # Count occurrences of each digit at position exp
+        for num in a:
+            index = (num // exp) % 10
+            count[index] += 1
+
+        # Prefix sums for stable sort
+        for i in range(1, 10):
+            count[i] += count[i - 1]
+
+        # Build output array (iterate from end for stability)
+        for i in range(n - 1, -1, -1):
+            index = (a[i] // exp) % 10
+            count[index] -= 1
+            output[count[index]] = a[i]
+
+        return output
+
+    result = arr[:]
+    while max_val // exp > 0:
+        result = count_sort_digit(result, exp)
+        exp *= 10
+
+    return result
